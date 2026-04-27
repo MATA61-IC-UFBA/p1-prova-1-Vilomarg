@@ -188,7 +188,3 @@ expr
 ;
 
 %%
-
-void yyerror(const char *msg) {
-    fprintf(stderr, "Erro na prova: %s\n", msg);
-}
