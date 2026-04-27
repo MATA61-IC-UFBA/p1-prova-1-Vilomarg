@@ -7,7 +7,7 @@ void yyerror(const char *msg);
 %}
 
 %option noyywrap
-%option yylileno
+%option yylineno
 
 %%
 
