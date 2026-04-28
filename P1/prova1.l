@@ -11,8 +11,8 @@ void yyerror(const char *msg);
 
 %%
 
-"//".* { /* Ignora comentários */ }
-[ \t\n\r]+              { /* Ignora espaços */ }
+"//".* { /* ignora comentários */ }
+[ \t\n\r]+              { /* ignora espaços */ }
 
 "print"                 { return PRINT; }
 "concat"                { return CONCAT; }
