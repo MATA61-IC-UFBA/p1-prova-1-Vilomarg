@@ -5,8 +5,6 @@
 
 extern int yylex();
 extern int yylineno;
-
-
 void yyerror(const char *msg);
 
 typedef struct {
@@ -55,7 +53,11 @@ void set_sym(char *name, int type, int ival, char *sval) {
     } val;
 }
 
-%token ERROR NUM IDENT STRING PRINT CONCAT LENGTH ASSIGN LPAREN RPAREN COMMA PLUS MINUS TIMES DIV
+%token ERROR
+%token <ival> NUM
+%token <sval> IDENT STRING
+%token PRINT CONCAT LENGTH ASSIGN LPAREN RPAREN COMMA
+%token PLUS MINUS TIMES DIV
 
 %type <val> expr
 %type <sval> str_list
@@ -82,10 +84,10 @@ stmt
     free($1);
 }
 | PRINT LPAREN exprlist RPAREN {
-    /* Silêncio: O main.c trata da saída no ficheiro .out */
+    
 }
 | expr {
-    /* Permite expressões soltas como 11 / 2 */
+    
 }
 ;
 
@@ -122,10 +124,14 @@ str_list
 
 expr
 : NUM {
-    $$.type = 0; $$.ival = $1; $$.sval = NULL;
+    $$.type = 0;
+    $$.ival = $1;
+    $$.sval = NULL;
 }
 | STRING {
-    $$.type = 1; $$.ival = 0; $$.sval = strdup($1);
+    $$.type = 1;
+    $$.ival = 0;
+    $$.sval = strdup($1);
 }
 | IDENT {
     Symbol *s = get_sym($1);
@@ -134,7 +140,9 @@ expr
         $$.ival = s->ival;
         $$.sval = s->type == 1 ? strdup(s->sval) : NULL;
     } else {
-        $$.type = 0; $$.ival = 0; $$.sval = NULL;
+        $$.type = 0;
+        $$.ival = 0;
+        $$.sval = NULL;
     }
     free($1);
 }
@@ -148,10 +156,13 @@ expr
 }
 | LPAREN expr RPAREN { $$ = $2; }
 | CONCAT LPAREN str_list RPAREN {
-    $$.type = 1; $$.ival = 0; $$.sval = $3;
+    $$.type = 1;
+    $$.ival = 0;
+    $$.sval = $3;
 }
 | LENGTH LPAREN expr RPAREN {
-    $$.type = 0; $$.sval = NULL;
+    $$.type = 0;
+    $$.sval = NULL;
     if($3.type == 1 && $3.sval != NULL) {
         $$.ival = strlen($3.sval);
     } else {
