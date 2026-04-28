@@ -5,7 +5,7 @@
 
 extern int yylex();
 extern int yylineno;
-/* A yyerror já está no seu main.c, apenas declaramos aqui */
+
 void yyerror(const char *msg);
 
 typedef struct {
@@ -85,10 +85,10 @@ stmt
     free($1);
 }
 | PRINT LPAREN exprlist RPAREN {
-    /* Fica em silêncio para o main.c agir */
+    
 }
 | expr {
-    /* Permite contas soltas como 11 / 2 */
+    
 }
 ;
 
