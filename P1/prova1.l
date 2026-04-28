@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* A função yyerror já está no teu main.c */
+
 void yyerror(const char *msg);
 %}
 
