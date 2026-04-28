@@ -5,6 +5,7 @@
 
 extern int yylex();
 extern int yylineno;
+/* A yyerror já está no seu main.c, apenas declaramos aqui */
 void yyerror(const char *msg);
 
 typedef struct {
@@ -84,10 +85,10 @@ stmt
     free($1);
 }
 | PRINT LPAREN exprlist RPAREN {
-    
+    /* Fica em silêncio para o main.c agir */
 }
 | expr {
-    
+    /* Permite contas soltas como 11 / 2 */
 }
 ;
 
@@ -124,25 +125,18 @@ str_list
 
 expr
 : NUM {
-    $$.type = 0;
-    $$.ival = $1;
-    $$.sval = NULL;
+    $$.type = 0; $$.ival = $1; $$.sval = NULL;
 }
 | STRING {
-    $$.type = 1;
-    $$.ival = 0;
-    $$.sval = strdup($1);
+    $$.type = 1; $$.ival = 0; $$.sval = strdup($1);
 }
 | IDENT {
     Symbol *s = get_sym($1);
     if(s) {
-        $$.type = s->type;
-        $$.ival = s->ival;
+        $$.type = s->type; $$.ival = s->ival;
         $$.sval = s->type == 1 ? strdup(s->sval) : NULL;
     } else {
-        $$.type = 0;
-        $$.ival = 0;
-        $$.sval = NULL;
+        $$.type = 0; $$.ival = 0; $$.sval = NULL;
     }
     free($1);
 }
@@ -156,13 +150,10 @@ expr
 }
 | LPAREN expr RPAREN { $$ = $2; }
 | CONCAT LPAREN str_list RPAREN {
-    $$.type = 1;
-    $$.ival = 0;
-    $$.sval = $3;
+    $$.type = 1; $$.ival = 0; $$.sval = $3;
 }
 | LENGTH LPAREN expr RPAREN {
-    $$.type = 0;
-    $$.sval = NULL;
+    $$.type = 0; $$.sval = NULL;
     if($3.type == 1 && $3.sval != NULL) {
         $$.ival = strlen($3.sval);
     } else {
